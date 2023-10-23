@@ -32,7 +32,8 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#lastName').type('Nunes', {delay: 0})
         cy.get('#email').type('teste@teste.com', {delay: 0})
         cy.get('#open-text-area').type(longText, {delay: 0})
-        cy.get('button[type="submit"]').click()
+        cy.contains('button', 'Enviar').click()
+        //O contains é uma outra forma de mapear o elemento. Você passa primeiro o elemento e depois o que ele contém.
 
         cy.get('.success').should('be.visible')
     })
@@ -117,7 +118,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('.success').should('be.visible')
     })
 
-    it.only('mesmo teste acima mas com parâmetros', function(){
+    it('mesmo teste acima mas com parâmetros', function(){
 
         cy.fillMandatoryFieldsAndSubmitWithParamanters('Renato', 'Nunes', 'teste@teste.com', 'Testando o teste')
         cy.get('.success').should('be.visible')
