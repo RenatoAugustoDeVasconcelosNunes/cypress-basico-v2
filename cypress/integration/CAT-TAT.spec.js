@@ -162,7 +162,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
 
     //Marca/Desmarca checkbox e verifica se está marcado ou não
-    it.only('marca ambos checkboxes, depois desmarca o último', function(){
+    it('marca ambos checkboxes, depois desmarca o último', function(){
 
         cy.get('[type="checkbox"]')
             .check()
@@ -175,6 +175,18 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         // .should('be.checked')
         // .last().uncheck().should('not.be.checked')
 
+    })
+
+    it.only('seleciona um arquivo da pasta fixtures', function(){
+
+        cy.get('#file-upload')
+            .should('not.have.value')
+            .selectFile('./cypress/fixtures/example.json')
+
+            .should(function($input){
+                console.log($input) //Loga na aba "Console", do inspecionar, um jQuery que é utilizado como base no expect
+                expect($input[0].files[0].name).to.equal('example.json')
+            })
     })
 
 
