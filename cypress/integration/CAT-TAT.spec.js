@@ -177,7 +177,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     })
 
-    it.only('seleciona um arquivo da pasta fixtures', function(){
+    it('seleciona um arquivo da pasta fixtures', function(){
 
         cy.get('#file-upload')
             .should('not.have.value')
@@ -186,7 +186,62 @@ describe('Central de Atendimento ao Cliente TAT', function() {
             .should(function($input){
                 console.log($input) //Loga na aba "Console", do inspecionar, um jQuery que é utilizado como base no expect
                 expect($input[0].files[0].name).to.equal('example.json')
+                //$input[0].files[0].name --> Isso é como se estivesse indo acessando os níveis de um HTML (por exemplo), até chegar
+                //na "tag" que precisa pegar a informação.
+                //Então o $input[0] é o primeiro nível, .files[0] é o segundo nível, e .name é onde contém o nome do arquivo que 
+                //precisamos validar no "to.equal". Cada parte desta cadeia é chamada de objeto.
             })
+    })
+
+
+    it('seleciona um arquivo simulando um drag-and-drop', function(){
+
+        cy.get('#file-upload')
+            .should('not.have.value')
+            .selectFile('./cypress/fixtures/example.json', { action: 'drag-drop' })
+            .should(function($input){
+                console.log($input)
+                expect($input[0].files[0].name).to.equal('example.json')
+            })
+
+
+    })
+
+    it('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', function(){
+
+        cy.fixture('example.json', null).as('myExemplo')
+
+        cy.get('#file-upload')
+            .should('not.have.value')
+            .selectFile('@myExemplo')
+            .should(function($input){
+                console.log($input)
+                expect($input[0].files[0].name).to.equal('example.json')
+            })
+
+
+    })
+
+
+    it('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', function(){
+
+        cy.get('#privacy a').should('have.attr', 'target', '_blank')
+    })
+
+
+    it('acessa a página da política de privacidade removendo o target e então clicando no link', function(){
+
+        cy.get('#privacy a').invoke('removeAttr', 'target').click()
+        //cy.get('#title')
+    })
+
+
+    it('testa a página da política de privacidade de forma independente', function(){
+
+        cy.get('#privacy a').invoke('removeAttr', 'target').click()
+        //A validação se a página da Política de privacidade abriu ou não, pode ser feita das duas formas abaixo:
+        //cy.get('#title').contains('Política de privacidade')
+        cy.contains('Política de privacidade').should('be.visible')
     })
 
 
