@@ -236,7 +236,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
 
 
-    it('testa a página da política de privacidade de forma independente', function(){
+    it.only('testa a página da política de privacidade de forma independente', function(){
 
         cy.get('#privacy a').invoke('removeAttr', 'target').click()
         //A validação se a página da Política de privacidade abriu ou não, pode ser feita das duas formas abaixo:
