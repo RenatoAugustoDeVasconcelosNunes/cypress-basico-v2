@@ -240,7 +240,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
         cy.get('#privacy a').invoke('removeAttr', 'target').click()
         //A validação se a página da Política de privacidade abriu ou não, pode ser feita das duas formas abaixo:
-        //cy.get('#title').contains('Política de privacidade')
+        //gitcy.get('#title').contains('Política de privacidade')
         cy.contains('Política de privacidade').should('be.visible')
     })
 
