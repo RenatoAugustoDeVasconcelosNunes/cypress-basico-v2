@@ -242,7 +242,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         //A validação se a página da Política de privacidade abriu ou não, pode ser feita das duas formas abaixo:
         //gitcy.get('#title').contains('Política de privacidade')
         cy.contains('Política de privacidade').should('be.visible')
-    })
+    }).
 
 
     
