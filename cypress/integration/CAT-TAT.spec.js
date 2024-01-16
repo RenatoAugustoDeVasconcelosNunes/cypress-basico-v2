@@ -30,6 +30,9 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         //Criação de variável
         //const é o tipo da variável, e longText é o nome da variável
         const longText = 'Teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste.'
+        
+        cy.clock()
+        
         cy.get('#firstName').type('Renato', {delay: 0})
         cy.get('#lastName').type('Nunes', {delay: 0})
         cy.get('#email').type('teste@teste.com', {delay: 0})
@@ -38,6 +41,11 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         //O contains é uma outra forma de mapear o elemento. Você passa primeiro o elemento e depois o que ele contém.
 
         cy.get('.success').should('be.visible')
+
+        cy.tick(3000)
+        
+        cy.get('.success').should('not.be.visible')
+
     })
 
     //Teste 03
