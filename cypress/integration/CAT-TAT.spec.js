@@ -64,12 +64,18 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     //Teste 04
     it('campo telefone continua vazio quando preenchido com valor não-numérico,', function(){
         
-        cy.get('#phone').type('k').should('have.value', '')
+        Cypress._.times(5, function() {
+
+            cy.get('#phone').type('k').should('have.value', '')
+
+        })
 
     })
 
     //Teste 05
-    it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function(){
+    it.only('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function(){
+
+        Cypress._.times(5, function (){
 
         cy.get('#firstName').type('Renato', {delay: 0})
         cy.get('#lastName').type('Nunes', {delay: 0})
@@ -79,6 +85,8 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
 
         cy.get('.error').should('be.visible')  
+
+        })
 
     })
 
