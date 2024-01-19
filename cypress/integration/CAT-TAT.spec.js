@@ -29,14 +29,15 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
         //Criação de variável
         //const é o tipo da variável, e longText é o nome da variável
-        const longText = 'Teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste.'
-        
+        // const longText = 'Teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste, teste.'
+        const longText = Cypress._.repeat('Teste', 10)
+
         cy.clock()
         
         cy.get('#firstName').type('Renato', {delay: 0})
         cy.get('#lastName').type('Nunes', {delay: 0})
         cy.get('#email').type('teste@teste.com', {delay: 0})
-        cy.get('#open-text-area').type(longText, {delay: 0})
+        cy.get('#open-text-area').type(longText, {delay: 0}).should('have.value', longText)
         cy.contains('button', 'Enviar').click()
         //O contains é uma outra forma de mapear o elemento. Você passa primeiro o elemento e depois o que ele contém.
 
@@ -73,7 +74,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
 
     //Teste 05
-    it.only('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function(){
+    it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function(){
 
         Cypress._.times(5, function (){
 
@@ -261,9 +262,84 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
 
 
+    it('exibe e esconde as mensagens de sucesso e erro usando o .invoke()', function(){
+
+        //Faz exibir a mensagem de sucesso que está contida na tag "sucess", e realiza a validação com o "and", e depois esconde a 
+        //mensagem novamente. O mesmo é realizado com a tag "error".
+        cy.get('.success')
+            .should('not.be.visible')
+            .invoke('show')
+            .should('be.visible')
+            .and('contain', 'Mensagem enviada com sucesso.')
+            .invoke('hide')
+            .should('not.be.visible')
+
+        cy.get('.error')
+            .should('not.be.visible')
+            .invoke('show')
+            .should('be.visible')
+            .and('contain', 'Valide os campos obrigatórios!')
+            .invoke('hide')
+            .should('not.be.visible')
+
+        
+    })
+
+    it('preenche a area de texto usando o comando invoke', function(){
+
+        const nome = "Renato Nunes"
+        const longText = Cypress._.repeat('0123456789', 20)
+        cy.get('#firstName')
+            .should('not.have.value')
+            .invoke('val', nome)
+            .should('have.value', nome)
+        
+        cy.get('#open-text-area')
+            .should('not.have.value')
+            .invoke('val', longText)
+            .should('have.value', longText)
     
+        
+    })
 
 
+    it('faz uma requisição HTTP', function(){
+
+        cy.request({
+            method: 'GET',
+            url: 'https://cac-tat.s3.eu-central-1.amazonaws.com/index.html'
+        })
+            .then((response) => {
+
+                expect(response.status).to.equal(200);
+                expect(response.statusText).to.equal('OK')
+                expect(response.body).to.include('CAC TAT')
+                expect(response.body).to.include('🐈')
+
+            })
+
+        //Forma diferente de fazer
+
+        // cy.request('https://cac-tat.s3.eu-central-1.amazonaws.com/index.html')
+        //     .should(function(response){
+        //         const {status, statusText, body } = response
+        //         expect(status).to.equal(200)
+        //         expect(statusText).to.equal('OK')
+        //         expect(body).to.include('CAC TAT')
+        //     })
+        
+    })
+
+    it.only('encontrando o gato no html', function(){
+
+        cy.get('#cat')
+            .should('not.be.visible')
+            .invoke('show')
+            .should('be.visible')
+            .invoke('hide')
+            .should('not.be.visible')
+
+    })
 
 
 })
