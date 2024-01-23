@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-//Comando para abrir o Cypress via termina --> npm run cy:open
+//Comando para abrir o Cypress via terminal --> npm run cy:open
 
 //describe é a suíte de testes e o it é o test case
 describe('Central de Atendimento ao Cliente TAT', function() {
@@ -303,7 +303,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
 
 
-    it('faz uma requisição HTTP', function(){
+    it.only('faz uma requisição HTTP', function(){
 
         cy.request({
             method: 'GET',
